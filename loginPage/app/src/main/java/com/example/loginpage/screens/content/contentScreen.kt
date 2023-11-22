@@ -36,11 +36,11 @@ fun ContentScreen(modifier: Modifier = Modifier, navController: NavHostControlle
                 navController.navigate("display") {
                     navController.graph.startDestinationRoute?.let { screenroute ->
                         popUpTo(screenroute) {
-                            saveState = true
+                            saveState = false
                         }
                     }
                     launchSingleTop = true
-                    restoreState = true
+                    restoreState = false
                 }
             }
         )

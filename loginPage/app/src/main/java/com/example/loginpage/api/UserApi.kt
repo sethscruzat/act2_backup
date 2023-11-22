@@ -12,7 +12,7 @@ interface UserApi {
     fun getUserList(): Call<List<UserDataModal>>
 
     @GET("/users/{id}")
-    fun getUserData(@Path("id") id: Int): Call<List<UserDataModal>>
+    fun getUserData(@Path("id") id: Int): Call<UserDataModal>
 
     @POST("/login")
     fun authenticateUser(@Body map: HashMap<String, String>): Call<UserDataModal>

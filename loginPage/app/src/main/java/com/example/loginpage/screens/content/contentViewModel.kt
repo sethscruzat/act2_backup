@@ -22,29 +22,29 @@ class contentViewModel: ViewModel() {
 
 
     fun getUserData(id: Int){
-        val client: Call<List<UserDataModal>> = RetrofitConfig.getApiService().getUserData(id)
-        client.enqueue(object: Callback<List<UserDataModal>> {
-            override fun onResponse(call: Call<List<UserDataModal>>, response: Response<List<UserDataModal>>) {
+        val client: Call<UserDataModal> = RetrofitConfig.getApiService().getUserData(id)
+        client.enqueue(object: Callback<UserDataModal> {
+            override fun onResponse(call: Call<UserDataModal>, response: Response<UserDataModal>) {
                 if(response.code() == 200){
                     val responseBody = response.body()
 
                     if (responseBody != null) {
-                        val fullName = "${responseBody[0].firstName} ${responseBody[0].lastName}"
+                        val fullName = "${responseBody.firstName} ${responseBody.lastName}"
                         _name.value = fullName
                     }
 
                     if (responseBody != null) {
-                        _email.value = responseBody[0].email
+                        _email.value = responseBody.email
                     }
 
                     if (responseBody != null) {
-                        _favFood.value = responseBody[0].favFood
+                        _favFood.value = responseBody.favFood
                     }
                 }
             }
 
-            override fun onFailure(call: Call<List<UserDataModal>>, t: Throwable) {
-                Log.d("FAILURE", "Error", t.cause)
+            override fun onFailure(call: Call<UserDataModal>, t: Throwable) {
+                Log.d("FAILURE", "Error ba talaga?", t.cause)
             }
         })
     }

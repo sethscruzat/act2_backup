@@ -1,13 +1,13 @@
 const express = require('express');
 const User = require('./models/user');
+const axios = require('axios');
 
-const router = express.Router();
+const router = express();
 
 router.get('/users', async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).send(JSON.stringify(users))
-    //res.json(users);
+    const users = await axios.get('https://www.jsonkeeper.com/b/HSR4')
+    res.status(200).send(serializedUsers);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -16,10 +16,11 @@ router.get('/users', async (req, res) => {
 
 router.get('/users/:id', async (req, res) => {
   try {
-    const userID = {id: req.params.id}
+    const userID = req.params.id
 
-    const user = await User.find(userID);
-    res.status(200).send(JSON.stringify(user))
+    const response = await axios.get('https://www.jsonkeeper.com/b/HSR4');
+    const user = response.data.users.find(user => user.id === parseInt(userID, 10));
+    res.status(200).json(user)
     //res.json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
@@ -28,16 +29,15 @@ router.get('/users/:id', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const query = {
-    password: req.body.password,
-    email: req.body.email
-  }
+  const {email,password} = req.body
 
   try {
-    const user = await User.findOne(query)
+    const response = await axios.get('https://www.jsonkeeper.com/b/HSR4');
+    const user = response.data.users.find((user) => user.email === email && user.password === password );
+
     if (user != null){
       const objToSend = {id: user.id};
-      res.status(200).send(JSON.stringify(objToSend));
+      res.status(200).json(objToSend)
     }
 
     if (!user) {
